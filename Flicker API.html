@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Retrieving a bunch of photos from Flicker</title>
+    <style>
+    #content {
+    	padding: 5pt;
+    	border: 2px dashed lightgray;
+    }
+    </style>
+    <script type="text/javascript" src="jquery-1.9.1.js"></script>
+    <script type="text/javascript">
+      $("document").ready(function() {
+        getJSONData();
+      });
+      
+	  function getJSONData() {
+		var flickrAPI = "http://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+		$.getJSON( flickrAPI, {
+			tags: "london",
+			tagmode: "any",
+			format: "json"
+			},
+			successFn);
+      }
+      
+      function successFn(result) {
+		$.each(result.items, function(i, item) {
+			$("<img>").attr("src", item.media.m).appendTo("#content");
+			if (i === 30) {
+				return false;
+			}
+		});
+      }
+      function errorFn(xhr, status, strErr) {
+        alert(strErr);
+      }
+  </script>
+</head>
+<body>
+<h1>Retrieving a bunch of photos from Flicker</h1>
+<div id="content"></div>
+</body>
+</html>
